@@ -6,6 +6,7 @@ export interface CameraResult {
   pixels: Pixels;
   draw: (setPixel: SetPixel) => void;
   reset: () => void;
+  inBound: (position: {x: number, y: number}, size: {height: number, width: number}) => boolean;
 }
 
 export default function createCamera(height: number, width: number): CameraResult {
@@ -44,6 +45,22 @@ export default function createCamera(height: number, width: number): CameraResul
       buffer = Array<OrgbValue>();
     }
 
-    return {moveCamera, draw, reset, pixels: {setPixel, getPixel}};
+    function inBound(position: {x: number, y: number}, size: {height: number, width: number}) {
+      if (position.x + size.width < x) {
+        return false;
+      }
+      if (position.y + size.height < y) {
+        return false;
+      }
+      if (position.x > x + width) {
+        return false;
+      }
+      if (position.y > y + height) {
+        return false;
+      }
+      return true;
+    }
+
+    return {moveCamera, inBound, draw, reset, pixels: {setPixel, getPixel}};
 
 }
