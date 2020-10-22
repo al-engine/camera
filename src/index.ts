@@ -1,4 +1,4 @@
-import {OrgbValue, Pixels, SetPixel} from "core";
+import {OrgbColor, OrgbValue, Pixels, SetPixel} from "core";
 
 export type MoveCamera = (_x: number, _y: number) => void;
 export interface CameraResult {
@@ -20,15 +20,18 @@ export default function createCamera(height: number, width: number): CameraResul
       const rx = px - x;
       const ry = py - y;
       if (rx >= 0 && rx < width && ry >= 0 && ry < height) {
-        buffer[rx + width * ry] = color;
+        const oldColor = new OrgbColor(getPixel(px, py) ?? 0);
+        const newColor = new OrgbColor(color);
+        buffer[rx + width * ry] = oldColor.compose(newColor).value;
       }
     }
-    function getPixel(px: number, py: number): OrgbValue | void {
+    function getPixel(px: number, py: number): OrgbValue | undefined {
       const rx = px - x;
       const ry = py - y;
       if (rx >= 0 && rx < width && ry >= 0 && ry < height) {
         return buffer[rx + width * ry];
       }
+      return undefined;
     }
     function draw(setPixel: SetPixel) {
       for (let i = 0; i < width * height; i++) {
