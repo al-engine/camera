@@ -1,13 +1,4 @@
-import {OrgbColor, OrgbValue, Pixels, SetPixel} from "core";
-
-export type MoveCamera = (_x: number, _y: number) => void;
-export interface CameraResult {
-  moveCamera: MoveCamera;
-  pixels: Pixels;
-  draw: (setPixel: SetPixel) => void;
-  reset: () => void;
-  inBound: (position: {x: number, y: number}, size: {height: number, width: number}) => boolean;
-}
+import {OrgbColor, OrgbValue, SetPixel, CameraResult} from "core";
 
 export default function createCamera(height: number, width: number): CameraResult {
   let x = 0, y = 0;
