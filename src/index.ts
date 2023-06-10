@@ -7,6 +7,9 @@ export default function createCamera(
   let x = 0,
     y = 0;
   let buffer = Array<OrgbValue>();
+  function getPosition() {
+    return { x, y };
+  }
   function moveCamera(_x: number, _y: number) {
     x = _x;
     y = _y;
@@ -62,5 +65,12 @@ export default function createCamera(
     return true;
   }
 
-  return { moveCamera, inBound, draw, reset, pixels: { setPixel, getPixel } };
+  return {
+    getPosition,
+    moveCamera,
+    inBound,
+    draw,
+    reset,
+    pixels: { setPixel, getPixel },
+  };
 }
